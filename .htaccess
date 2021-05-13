@@ -1,7 +1,12 @@
 <IfModule mod_rewrite.c>
 
 RewriteEngine On
-RewriteBase /
+
+# Uncomment the following if insalled on domain root (like mywebsite.com)
+#RewriteBase /
+
+# Uncomment the following if installer into a subfolder (like mywebsite.com/pwdmanager/)
+RewriteBase /pwdmanager
 
 #blocca accesso alla cartella system
 RewriteCond %{REQUEST_URI} ^system.*
