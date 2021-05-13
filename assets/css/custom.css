@@ -1,0 +1,33 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;700&family=Open+Sans:wght@300;400;700&Courier+Prime:wght@400;700&display=swap');
+
+body {
+	font-family: 'Open Sans', sans-serif;
+}
+
+.form-control,
+.btn,
+#items-wrapper .card {
+	border-radius: 0;
+}
+
+#insert-form {
+	width:  100%;
+}
+
+.item {
+}
+
+.item .title {
+	text-transform: uppercase;
+	font-family: 'Montserrat', sans-serif;
+	/*font-size: 1rem;*/
+}
+
+.code {
+	font-family: 'Courier Prime', monospace;
+	word-break: break-all;
+}
+
+.badge {
+	border-radius: 0;
+}
