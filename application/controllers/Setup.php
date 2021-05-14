@@ -8,9 +8,7 @@ class Setup extends CI_Controller {
 		$this->load->helper('form');
 		$this->load->helper('url');
 		$this->load->helper('common');
-		$this->load->model('items_model');
-		$this->load->library('pagination');
-		$this->load->library('session');
+		$this->load->model('setup_model');
 		$this->load->library('form_validation');
 
 		date_default_timezone_set('Europe/Rome');
@@ -19,91 +17,51 @@ class Setup extends CI_Controller {
 	}
 	
 	public function index() {
-		echo "test";
-		//redirect("items_list",'location');
+		$this->setup_model->check_db();
+		redirect("setup/step1",'location');
 	}
 
-	public function list($page = 1) {
-		$this->login_model->check_login();
-
-		//configurazione paginazione
-		/*
-		$config['uri_segment'] = 3;
-		$config['base_url'] = base_url('items/list/');
-		$config['total_rows'] = $this->items_model->get_items_rows();
-		$config['per_page'] = 10;
-		$config['use_page_numbers'] = true;
-		$config['display_pages'] = false;
-		//$config['first_link'] = false;
-		//$config['last_link'] = false;
-		//$config['prev_link'] = true;
-		//$config['next_link'] = true;
-		$config['next_tag_open'] = '<div class="pagination-next">';
-		$config['next_tag_close'] = '</div>';
-		$config['full_tag_open'] = '<div class="pagination">';
-		$config['full_tag_close'] = '</div>';
-
-		//$config['num_links'] = $config['total_rows'];
-		$this->pagination->initialize($config);//caricamento paginazione
-
-		$data['items'] = $this->items_model->get_items($page, $config['per_page']);
-		*/
-		$data['items'] = $this->items_model->get_items();
-
-
-		$this->load->view('header');
-		$this->load->view('items_list', $data);
-		$this->load->view('footer');
-	}
-
-	public function delete($id) { 
-		$this->login_model->check_login();
-
-		$this->items_model->delete_item($id);
-		redirect("items/list",'location');
-	}
-
-	public function edit($eid = false) {
-		$this->login_model->check_login();
-
-		if ($eid == false) {
-			$id = false;
-			$data['title'] = "Aggiungi";
-			$data['item'] = array(
-				'title'       => '',
-				'description' => '',
-				'url'         => '',
-				'username'    => '',
-				'password'    => '',
-			);
-		} else {
-			//$id = $this->encrypt->decode($eid);
-			$id = $eid;
-			$data['title'] = "Modifica";
-			$data['item'] = $this->items_model->get_item($id);
-		}
-
-		$data['id'] = $id;
+	public function step1() {
+		$this->setup_model->check_db();
 
 		$this->form_validation->set_message('required', 'Il campo {field} &egrave; obbligatorio');
 
-		$this->form_validation->set_rules('title', 'Titolo', 'required');  
+		$this->form_validation->set_rules('username', 'Username', 'required');  
+		$this->form_validation->set_rules('password', 'Password', 'required');  
 		
 		if( $this->form_validation->run() ) {
-			if ($id == false) {
-				$this->items_model->insert_item();
-			} else {
-				$this->items_model->update_item($id);
-			}
-		}
-		redirect("items/list",'location');
+			$this->setup_model->create_db_tables();
+			$this->setup_model->set_password();
+
+			redirect("setup/step2",'location');
+
+		} 
+		$this->load->view('setup/step1');
+	}
+
+	public function step2() {
+		$this->setup_model->check_db();
+
+		$this->form_validation->set_message('required', 'Il campo {field} &egrave; obbligatorio');
+
+		$this->form_validation->set_rules('username', 'Username', 'required');  
+		$this->form_validation->set_rules('password', 'Password', 'required');  
+		
+		if( $this->form_validation->run() ) {
+			$this->setup_model->create_db_tables();
+			$this->setup_model->set_password();
+
+			redirect("setup/step3",'location');
+
+		} 
+		$this->load->view('setup/step2');
 	}
 
 	public function export() {
 		$this->login_model->check_login();
 
-		$data['fields']    = $this->items_model->get_items_fields();
-		$data['items']     = $this->items_model->get_items();
+		$data['fields']    = $this->setup_model->get_items_fields();
+		$data['items']     = $this->setup_model->get_items();
 		$data['delimiter'] = ';';
 		$data['new_line']  = '<br/>';
 
@@ -116,7 +74,7 @@ class Setup extends CI_Controller {
 		$csv = $this->csv_to_array('dati.csv', ';');
 		foreach ($csv as $key => $value) {
 			//if ($key > 1) return;
-			$this->items_model->import_item($value);
+			$this->setup_model->import_item($value);
 		}
 	}
 
