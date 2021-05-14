@@ -6,6 +6,10 @@ class Login_model extends CI_Model {
 		$this->load->database();
 	}
 
+	public function check_db() {
+		if ($this->db->query("SHOW TABLES LIKE 'app_items';")->row_array() == NULL || $this->db->query("SHOW TABLES LIKE 'app_users';")->row_array() == NULL) redirect(base_url('login/db_error'));
+	}
+
 	public function login( $username, $password ) {
 		//$this->set_pwd($username, $password);
 		$query = $this->db->select('id, registry_id')

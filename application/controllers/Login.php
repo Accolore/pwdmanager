@@ -15,11 +15,14 @@ class Login extends CI_Controller {
     }
 
 	public function index() {
+		$this->login_model->check_db();
     	if ($this->login_model->check_login()) redirect(base_url('items/list'));
 		redirect(base_url("login/access"),'location');
 	}
 
     public function access() {
+		$this->login_model->check_db();
+
     	$this->form_validation->set_message('required', 'Il campo {field} &egrave; obbligatorio');
 
 		$this->form_validation->set_rules('username', 'Utente', 'required');  
@@ -45,6 +48,9 @@ class Login extends CI_Controller {
 		$this->login_model->logout();
 		$this->session->set_flashdata('error', 'Logout effettuato con successo');
 		redirect(base_url("login/access"),'location');
+	}
 
+	public function db_error() {
+		$this->load->view('db_error');
 	}
 }

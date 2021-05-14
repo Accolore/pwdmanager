@@ -8,8 +8,10 @@ class Setup extends CI_Controller {
 		$this->load->helper('form');
 		$this->load->helper('url');
 		$this->load->helper('common');
+		$this->load->library('session');
 		$this->load->model('setup_model');
-		$this->load->library('form_validation');
+		$this->load->model('login_model');
+		//$this->load->library('form_validation');
 
 		date_default_timezone_set('Europe/Rome');
 
@@ -17,44 +19,12 @@ class Setup extends CI_Controller {
 	}
 	
 	public function index() {
-		$this->setup_model->check_db();
-		redirect("setup/step1",'location');
 	}
 
-	public function step1() {
-		$this->setup_model->check_db();
+	public function user_create() {
+		$this->login_model->check_login();
 
-		$this->form_validation->set_message('required', 'Il campo {field} &egrave; obbligatorio');
-
-		$this->form_validation->set_rules('username', 'Username', 'required');  
-		$this->form_validation->set_rules('password', 'Password', 'required');  
-		
-		if( $this->form_validation->run() ) {
-			$this->setup_model->create_db_tables();
-			$this->setup_model->set_password();
-
-			redirect("setup/step2",'location');
-
-		} 
-		$this->load->view('setup/step1');
-	}
-
-	public function step2() {
-		$this->setup_model->check_db();
-
-		$this->form_validation->set_message('required', 'Il campo {field} &egrave; obbligatorio');
-
-		$this->form_validation->set_rules('username', 'Username', 'required');  
-		$this->form_validation->set_rules('password', 'Password', 'required');  
-		
-		if( $this->form_validation->run() ) {
-			$this->setup_model->create_db_tables();
-			$this->setup_model->set_password();
-
-			redirect("setup/step3",'location');
-
-		} 
-		$this->load->view('setup/step2');
+		$this->load->view('setup/user_create');
 	}
 
 	public function export() {

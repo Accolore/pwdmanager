@@ -12,8 +12,8 @@
 					</div>
 					<div class="col-4 text-end">
 						<div class="btn-group">
-							<button class="btn btn-sm btn-outline-warning edit-trigger fas fa-edit" data-id="<?php echo $value['id'] ?>" title="Modifica"></button>
-							<a href="#" class="btn btn-sm btn-outline-danger delete-button" data-id="<?php echo $value['id'] ?>" title="Elimina"><i class="fas fa-times"></i></a>
+							<button class="btn btn-sm btn-outline-warning edit-trigger fas fa-edit" data-id="<?php echo $value['id'] ?>" title="Edit"></button>
+							<a href="#" class="btn btn-sm btn-outline-danger delete-button" data-id="<?php echo $value['id'] ?>" title="Delete"><i class="fas fa-times"></i></a>
 						</div>
 					</div>
 				</div>
@@ -24,14 +24,13 @@
 								<span class="badge bg-info"><i class="fas fa-user"></i></span>
 							</div>
 							<div class="col-11">
-								<a href="#" class="code copy-usr-button" data-usr="<?php echo $value['username'] ?>" title="Copia Utente"><?php echo $value['username']; ?></a>
+								<a href="#" class="code copy-usr-button" data-usr="<?php echo $value['username'] ?>" title="Copy Username"><?php echo $value['username']; ?></a>
 							</div>
 						</div>
-
 						<?php /*
 						<div class="row">
 							<div class="col-12">
-								<a href="#" class="code copy-usr-button" data-usr="<?php echo $value['username'] ?>" title="Copia Utente">
+								<a href="#" class="code copy-usr-button" data-usr="<?php echo $value['username'] ?>" title="Sopy Username">
 									<span class="badge bg-success"><i class="fas fa-user"></i> <?php echo $value['username']; ?></span>
 								</a>
 							</div>
@@ -44,7 +43,7 @@
 								<span class="badge bg-info"><i class="fas fa-key"></i></span>
 							</div>
 							<div class="col-11">
-								<a href="#" class="code copy-pwd-button" data-pwd="<?php echo $value['password'] ?>" title="Copia Password"><?php echo $value['password']; ?></a>
+								<a href="#" class="code copy-pwd-button" data-pwd="<?php echo $value['password'] ?>" title="Copy Password"><?php echo $value['password']; ?></a>
 							</div>
 						</div>
 					<?php endif; ?>
@@ -58,7 +57,7 @@
 								<?php if (filter_var($value['url'], FILTER_VALIDATE_URL) === FALSE) : ?>
 									<span class="code"><?php echo $url; ?></span>
 								<?php else : ?>
-									<a href="<?php echo $value['url']; ?>" class="code" target="_blank" title="Visita il sito"><?php echo $url; ?></a>
+									<a href="<?php echo $value['url']; ?>" class="code" target="_blank" title="Go to URL"><?php echo $url; ?></a>
 								<?php endif; ?>
 							</div>
 						</div>
@@ -75,12 +74,12 @@
 				<form method="post" class="closed d-none mt-3" id="edit-form-<?php echo $value['id'] ?>" action=<?php echo base_url('items/edit/') . $value['id']; ?>>
 					<div class="d-grid d-block mb-2">
 						<div class="form-floating mb-2">
-							<input type="text" name="title" class="form-control" placeholder="Titolo" value="<?php echo $value['title'];?>" />
-							<label for="title">Titolo</label>
+							<input type="text" name="title" class="form-control" placeholder="Title" value="<?php echo $value['title'];?>" />
+							<label for="title">Title</label>
 						</div>
 						<div class="form-floating mb-2">
-							<input type="text" name="username" class="form-control" placeholder="Utente" value="<?php echo $value['username'];?>" />
-							<label for="username">Utente</label>
+							<input type="text" name="username" class="form-control" placeholder="Username" value="<?php echo $value['username'];?>" />
+							<label for="username">Username</label>
 						</div>
 						<div class="form-floating mb-2">
 							<input type="text" name="password" class="form-control" placeholder="Password" value="<?php echo $value['password'];?>" />
@@ -90,8 +89,8 @@
 							<input type="text" name="url" class="form-control" placeholder="Url" value="<?php echo $value['url'];?>" />
 							<label for="url">Url</label>
 						</div>
-						<textarea class="form-control mb-2" name="note" rows="3" placeholder="Note"><?php echo  $value['note']; ?></textarea>
-						<button type="submit" class="btn btn-outline-success" title="Salva"><i class="fas fa-check"></i> Salva</button>
+						<textarea class="form-control mb-2" name="note" rows="3" placeholder="Notes"><?php echo  $value['note']; ?></textarea>
+						<button type="submit" class="btn btn-outline-success" title="Salva"><i class="fas fa-check"></i> Save</button>
 					</div>
 				</form>
 			</div>
@@ -101,7 +100,7 @@
 		<div class="row mt-5">
 			<div class="col-12 text-center">
 				<i class="fas fa-3x fa-exclamation-triangle text-warning"></i>
-				<h1 class="title">Nessun risultato</h1>
+				<h1 class="title">No result found</h1>
 				</div>
 	<?php endif; // if ($items) : ?>
 </div>
@@ -131,7 +130,7 @@
 		item.addEventListener('click', event => {	
 			event.preventDefault();
 			copyToClipboard(item.getAttribute('data-pwd'));
-			//alert('Password copiata negli appunti.')
+			//alert('Password saved in clipboard.')
 		});
 	});
 
@@ -139,14 +138,14 @@
 		item.addEventListener('click', event => {	
 			event.preventDefault();
 			copyToClipboard(item.getAttribute('data-usr'));
-			//alert('Utente copiato negli appunti.')
+			//alert('Username saved in clipboard.')
 		});
 	});	
 
 	document.querySelectorAll('.delete-button').forEach(item => {
 		item.addEventListener('click', event => {
 			event.preventDefault();	
-			var domanda = confirm("Sei sicuro?");
+			var domanda = confirm("Are you sure you want to proceed?");
 			if (domanda) {
 				window.location.href = "<?php echo base_url('items/delete/'); ?>" + item.getAttribute('data-id');
 			}
@@ -159,36 +158,25 @@
 			let description = document.getElementById("item-data-" + item.getAttribute('data-id'));
 
 			if (edit_form.classList.contains('closed')) {
-				// visualizzo la form
 				edit_form.classList.remove('d-none');
 				description.classList.add('d-none');
 				edit_form.classList.remove('closed');
 				edit_form.classList.add('open');
-				// impostare icona del pulsante event.target "x"
+
 				item.classList.add('fa-minus');
 				item.classList.remove('fa-edit');
 
 				edit_form.elemets[0].focus();
 			} else {
-				// nascondo la form
+
 				edit_form.classList.add('d-none');
 				description.classList.remove('d-none');
 				edit_form.classList.remove('open');
 				edit_form.classList.add('closed');
-				// impostare icona del pulsante event.target "edit"
+
 				item.classList.remove('fa-minus');
 				item.classList.add('fa-edit');
 			}
 		});
 	});
-
-	/*
-	var elem = document.querySelector('#items-wrapper');
-	var infScroll = new InfiniteScroll( elem, {
-		path   : '.pagination-next a',
-		append : '.item',
-		history: false,
-		//status : '.page-load-status',
-	});
-	*/
 </script>

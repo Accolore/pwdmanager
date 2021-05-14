@@ -9,10 +9,8 @@ CREATE TABLE IF NOT EXISTS `app_items` (
   `edit_date` datetime DEFAULT CURRENT_TIMESTAMP,
   `registry_id` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=146 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
 
-
--- Dump della struttura di tabella pwd_accolore_com_db.app_users
 CREATE TABLE IF NOT EXISTS `app_users` (
   `id` int(11) NOT NULL,
   `username` varchar(50) CHARACTER SET utf8 NOT NULL,
@@ -21,8 +19,5 @@ CREATE TABLE IF NOT EXISTS `app_users` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Dump dei dati della tabella pwd_accolore_com_db.app_users: ~2 rows (circa)
-DELETE FROM `app_users`;
-/*!40000 ALTER TABLE `app_users` DISABLE KEYS */;
 INSERT INTO `app_users` (`id`, `username`, `password`, `registry_id`) VALUES
-  (1, 'admin', '098f6bcd4621d373cade4e832627b4f6', 1);
+  (1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 1);
