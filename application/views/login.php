@@ -39,7 +39,7 @@
 			<?php endif; ?>
 		</form>
 		<div class="text-center">
-			<p class="text-muted">&copy; 2021</p>
+			<p class="text-muted">GPL License - 2021</p>
 		</div>
 	</div>
 </body>
